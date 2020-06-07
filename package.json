@@ -1,0 +1,21 @@
+{
+  "name": "aubp_counter",
+  "version": "1.0.0",
+  "description": "people counter bains des paquis",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fxi/aubp_counter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fxi/aubp_counter/issues"
+  },
+  "browserslist": ["last 1 Chrome versions"],
+  "homepage": "https://github.com/fxi/aubp_counter#readme"
+}
