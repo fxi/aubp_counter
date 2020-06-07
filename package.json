@@ -4,6 +4,7 @@
   "description": "people counter bains des paquis",
   "main": "index.js",
   "scripts": {
+    "prod": "parcel build index.html -d docs/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,6 +17,14 @@
   "bugs": {
     "url": "https://github.com/fxi/aubp_counter/issues"
   },
-  "browserslist": ["last 1 Chrome versions"],
-  "homepage": "https://github.com/fxi/aubp_counter#readme"
+  "browserslist": [
+    "defaults"
+  ],
+  "homepage": "https://github.com/fxi/aubp_counter#readme",
+  "dependencies": {
+    "regenerator-runtime": "^0.13.5"
+  },
+  "devDependencies": {
+    "cssnano": "^4.1.10"
+  }
 }

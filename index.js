@@ -1,3 +1,5 @@
+import 'regenerator-runtime/runtime'
+
 const config = {
   endPoint: 'https://api.mytechnis.com/api',
   idZone: 355,
