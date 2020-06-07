@@ -4,7 +4,7 @@
   "description": "people counter bains des paquis",
   "main": "index.js",
   "scripts": {
-    "prod": "parcel build index.html -d ./docs/ --public-url ./docs/",
+    "prod": "parcel build index.html -d ./docs/ --public-url aubp_counter",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
