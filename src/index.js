@@ -29,12 +29,13 @@ async function update(e) {
   if (!res) {
     rg.update(0, 0);
   } else {
-    rg.update((res.count.delta / maxPeople) * 100, res.count.delta);
+   const warn =  res.status.code !== 0 ? res.status.msg : undefined;
+    if(warn){
+      console.warn(warn);
+    }
+    rg.update((res.count.delta / maxPeople) * 100, res.count.delta, warn);
   }
-  if (res.status.code !== 0) {
-    rg.update(0, 0, res.status.msg);
-    console.warn(res.status.msg);
-  }
+ 
 }
 window.rg = rg; /*{*/ /*}*/
 //0: Everything all right

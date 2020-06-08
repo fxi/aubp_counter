@@ -65,13 +65,14 @@ class RadialGauge {
     rp.elMsg = el('span', {
       style: {
         position: 'absolute',
-        whiteSpace: 'nowrap'
+        whiteSpace: 'nowrap',
+        'will-change': 'transform'
       }
     });
     rp.elMsgError = el('span', {
       style: {
         position: 'absolute',
-        top: '40%',
+        top: '70%',
         fontSize: '1em',
         whiteSpace: 'nowrap'
       }
