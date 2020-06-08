@@ -25,7 +25,7 @@ async function update(e) {
   if (!res) {
     rg.update(0, 0);
   } else {
-    rg.update(res.delta / maxPeople, res.delta);
+    rg.update((res.delta / maxPeople) * 100, res.delta);
   }
 }
 window.rg=rg;
