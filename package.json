@@ -4,7 +4,7 @@
   "description": "people counter bains des paquis",
   "main": "index.js",
   "scripts": {
-    "prod": "parcel build ./src/index.html -d ./docs/ --public-url ./",
+    "prod": "parcel build ./src/index.html ./src/example.html -d ./docs/ --public-url ./",
     "dev": "parcel ./src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
