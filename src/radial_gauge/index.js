@@ -34,9 +34,10 @@ class RadialGauge {
     this.update(0, 0);
   }
 
-  setMsg(str, color) {
+  setMsg(str, color, tooltip) {
     const rp = this;
     rp.elMsg.innerText = str;
+    rp.elMsg.title = tooltip;
     rp.elMsg.style.color = color || '#000';
     rp.fitMsg();
   }
@@ -94,7 +95,7 @@ class RadialGauge {
     const r = rC.width / rM.width;
     rp.elMsg.style.transform = `scale(${r * 0.55})`;
   }
-  update(p, str) {
+  update(p, str, tooltip) {
     let rp = this;
 
     if (isFinite(str * 1)) {
@@ -105,6 +106,8 @@ class RadialGauge {
     }
 
     onNextFrame(() => {
+      const radius = rp.opt.radius;
+
       rp.updateContext();
       rp.clear();
 
@@ -115,9 +118,9 @@ class RadialGauge {
       rp.ctx.strokeStyle = rp.opt.bg_stroke_color;
       rp.ctx.beginPath();
       rp.ctx.arc(
-        rp.opt.radius,
-        rp.opt.radius,
-        rp.opt.radius - rp.opt.bg_stroke / 2,
+        radius,
+        radius,
+        radius - rp.opt.bg_stroke / 2,
         0,
         2 * Math.PI
       );
@@ -128,16 +131,22 @@ class RadialGauge {
       rp.ctx.lineWidth = rp.opt.fg_stroke;
       rp._fg_color = p ? greenRed(p) : rp.opt.fg_stroke_color;
       rp.ctx.strokeStyle = rp._fg_color;
+
+
+      rp.ctx.translate(radius,radius);
+      rp.ctx.rotate( -90 *  Math.PI / 180);
+      rp.ctx.translate(-radius,-radius);
+
       rp.ctx.beginPath();
       rp.ctx.arc(
-        rp.opt.radius,
-        rp.opt.radius,
-        rp.opt.radius - rp.opt.fg_stroke,
+        radius,
+        radius,
+        radius - rp.opt.fg_stroke,
         0,
         (p / 100) * 2 * Math.PI
       );
       rp.ctx.stroke();
-      rp.setMsg(str, rp._fg_color);
+      rp.setMsg(str, rp._fg_color, tooltip);
     });
   }
 
