@@ -34,12 +34,17 @@ class RadialGauge {
     this.update(0, 0);
   }
 
-  setMsg(str, color, tooltip) {
+  setMsg(str, color) {
     const rp = this;
     rp.elMsg.innerText = str;
-    rp.elMsg.title = tooltip;
     rp.elMsg.style.color = color || '#000';
     rp.fitMsg();
+  }
+
+  setMsgError(str) {
+    const rp = this;
+    rp.elMsgError.title = str;
+    rp.elMsgError.innerText = "🐞";
   }
 
   destroy() {
@@ -63,13 +68,22 @@ class RadialGauge {
         whiteSpace: 'nowrap'
       }
     });
+    rp.elMsgError = el('span', {
+      style: {
+        position: 'absolute',
+        top: '40%',
+        fontSize: '1em',
+        whiteSpace: 'nowrap'
+      }
+    });
     rp.el = el(
       'div',
       {
         class: 'radial-gauge'
       },
       rp.elCanvas,
-      rp.elMsg
+      rp.elMsg,
+      rp.elMsgError
     );
     rp.elTarget.appendChild(rp.el);
     window.rp = rp;
@@ -95,7 +109,7 @@ class RadialGauge {
     const r = rC.width / rM.width;
     rp.elMsg.style.transform = `scale(${r * 0.55})`;
   }
-  update(p, str, tooltip) {
+  update(p, str, strError) {
     let rp = this;
 
     if (isFinite(str * 1)) {
@@ -103,6 +117,10 @@ class RadialGauge {
     }
     if (typeof str === 'undefined') {
       str = `${Math.round(p)} %`;
+    }
+
+    if(typeof strError !== 'undefined'){
+      rp.setMsgError(strError);
     }
 
     onNextFrame(() => {
@@ -117,13 +135,7 @@ class RadialGauge {
       rp.ctx.lineWidth = rp.opt.bg_stroke;
       rp.ctx.strokeStyle = rp.opt.bg_stroke_color;
       rp.ctx.beginPath();
-      rp.ctx.arc(
-        radius,
-        radius,
-        radius - rp.opt.bg_stroke / 2,
-        0,
-        2 * Math.PI
-      );
+      rp.ctx.arc(radius, radius, radius - rp.opt.bg_stroke / 2, 0, 2 * Math.PI);
       rp.ctx.stroke();
       /**
        * fg
@@ -132,10 +144,9 @@ class RadialGauge {
       rp._fg_color = p ? greenRed(p) : rp.opt.fg_stroke_color;
       rp.ctx.strokeStyle = rp._fg_color;
 
-
-      rp.ctx.translate(radius,radius);
-      rp.ctx.rotate( -90 *  Math.PI / 180);
-      rp.ctx.translate(-radius,-radius);
+      rp.ctx.translate(radius, radius);
+      rp.ctx.rotate((-90 * Math.PI) / 180);
+      rp.ctx.translate(-radius, -radius);
 
       rp.ctx.beginPath();
       rp.ctx.arc(
@@ -146,7 +157,7 @@ class RadialGauge {
         (p / 100) * 2 * Math.PI
       );
       rp.ctx.stroke();
-      rp.setMsg(str, rp._fg_color, tooltip);
+      rp.setMsg(str, rp._fg_color);
     });
   }
 
