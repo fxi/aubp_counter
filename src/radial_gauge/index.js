@@ -7,6 +7,7 @@ const settings = {
   radius: 100,
   fg_stroke: 2,
   fg_stroke_color: 'rgba(53,53,53,0.5)',
+  fg_stroke_color_error: 'rgba(53,53,53,0.3)',
   bg_stroke: 4,
   bg_stroke_color: 'rgba(53,53,53,0.1)'
 };
@@ -39,21 +40,20 @@ class RadialGauge {
     rp.elMsg.innerText = str;
     rp.elMsg.style.color = color || '#000';
     rp.fitMsg();
+    rp.elMsg.style.opacity = 1;
   }
 
   setMsgError(str) {
     const rp = this;
     rp.elMsgError.title = str;
-    rp.elMsgError.innerText = "🐞";
+    rp.elMsgError.innerText = '🐞';
   }
-
   destroy() {
     let rp = this;
     if (rp.elTarget && rp.el) {
       rp.el.remove();
     }
   }
-
   build() {
     let rp = this;
     rp.elCanvas = el('canvas', {
@@ -66,6 +66,9 @@ class RadialGauge {
       style: {
         position: 'absolute',
         whiteSpace: 'nowrap',
+        fontSize: '10em',
+        opacity: 0,
+        transition: 'opacity 1s easeInOut',
         'will-change': 'transform'
       }
     });
@@ -73,7 +76,6 @@ class RadialGauge {
       style: {
         position: 'absolute',
         top: '70%',
-        fontSize: '1em',
         whiteSpace: 'nowrap'
       }
     });
@@ -89,7 +91,6 @@ class RadialGauge {
     rp.elTarget.appendChild(rp.el);
     window.rp = rp;
   }
-
   updateContext() {
     let rp = this;
     let dpr = window.devicePixelRatio || 1;
@@ -101,7 +102,6 @@ class RadialGauge {
     ctx.scale(dpr, dpr);
     rp.ctx = ctx;
   }
-
   fitMsg() {
     let rp = this;
     rp.elMsg.style.transform = ``;
@@ -111,40 +111,36 @@ class RadialGauge {
     rp.elMsg.style.transform = `scale(${r * 0.55})`;
   }
   update(p, str, strError) {
-    let rp = this;
-
+    const rp = this;
+    let hasString = typeof str !== 'undefined';
+    let hasError = typeof strError !== 'undefined';
     if (isFinite(str * 1)) {
       str = Math.round(str);
     }
-    if (typeof str === 'undefined') {
+    if (!hasString) {
       str = `${Math.round(p)} %`;
     }
-
-    if(typeof strError !== 'undefined'){
+    if (hasError) {
       rp.setMsgError(strError);
     }
 
     onNextFrame(() => {
       const radius = rp.opt.radius;
-
       rp.updateContext();
       rp.clear();
 
       /**
        * bg
-       */
-      rp.ctx.lineWidth = rp.opt.bg_stroke;
+       */ rp.ctx.lineWidth = rp.opt.bg_stroke;
       rp.ctx.strokeStyle = rp.opt.bg_stroke_color;
       rp.ctx.beginPath();
       rp.ctx.arc(radius, radius, radius - rp.opt.bg_stroke / 2, 0, 2 * Math.PI);
       rp.ctx.stroke();
       /**
        * fg
-       */
-      rp.ctx.lineWidth = rp.opt.fg_stroke;
-      rp._fg_color = p ? greenRed(p) : rp.opt.fg_stroke_color;
+       */ rp.ctx.lineWidth = rp.opt.fg_stroke;
+      rp._fg_color = hasError ? rp.opt.fg_stroke_color_error : p ? greenRed(p) : rp.opt.fg_stroke_color;
       rp.ctx.strokeStyle = rp._fg_color;
-
       rp.ctx.translate(radius, radius);
       rp.ctx.rotate((-90 * Math.PI) / 180);
       rp.ctx.translate(-radius, -radius);
@@ -161,7 +157,6 @@ class RadialGauge {
       rp.setMsg(str, rp._fg_color);
     });
   }
-
   clear() {
     let rp = this;
     rp.ctx.clearRect(0, 0, rp.elCanvas.width, rp.elCanvas.height);

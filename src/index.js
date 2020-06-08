@@ -6,6 +6,7 @@ import {RadialGauge} from './radial_gauge/index.js';
 const elCount = document.getElementById('count');
 const rect = elCount.getBoundingClientRect();
 const maxPeople = 1500;
+
 const rg = new RadialGauge(elCount, {
   radius: rect.width / 2,
   fg_stroke: 3.5,
@@ -37,9 +38,4 @@ async function update(e) {
   }
  
 }
-window.rg = rg; /*{*/ /*}*/
-//0: Everything all right
-//1: Tiles missing
-//2: Connection lost
-//3: Pad is rebooting
-//4: Firmware is updating
+
