@@ -46,7 +46,7 @@ class RadialGauge {
   setMsgError(str) {
     const rp = this;
     rp.elMsgError.title = str;
-    rp.elMsgError.innerText = '🐞';
+    rp.elMsgError.innerText = '💩';
   }
   destroy() {
     let rp = this;
@@ -75,7 +75,7 @@ class RadialGauge {
     rp.elMsgError = el('span', {
       style: {
         position: 'absolute',
-        top: '70%',
+        left: '1em',
         whiteSpace: 'nowrap'
       }
     });
