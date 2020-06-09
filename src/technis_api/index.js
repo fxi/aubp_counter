@@ -37,10 +37,11 @@ zoneById(zoneId: ${config.idZone}){
 
   const resCount = await query(strCount);
   const resPad = await query(strPad);
-
-  const count = resCount.zoneById.counts[0];
-  if (count) {
+  const count = resCount.zoneById.counts[0] || {};
+  if (count.in) {
     count.delta = count.in - count.out;
+  }else{
+    count.delta = 0;
   }
   const padStatus = resPad.padById.status;
 

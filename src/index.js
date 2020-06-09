@@ -14,28 +14,34 @@ const rg = new RadialGauge(elCount, {
 });
 
 /**
- * Main
- */
+* On click update
+*/
+elCount.addEventListener('click',main);
 
-update().catch((e) => {
-  rg.update(0, 'Erreur 😬');
-  console.error(e);
-});
+/**
+* main
+*/
+main();
+
 /**
  * Helpers
  */
+function main() {
+  update().catch((e) => {
+    rg.update(0, 'Erreur 😬');
+    console.error(e);
+  });
+}
 async function update(e) {
   const date = e && e.target.value ? new Date(e.target.value) : new Date();
   const res = await getDelta(date);
   if (!res) {
     rg.update(0, 0);
   } else {
-   const warn =  res.status.code !== 0 ? res.status.msg : undefined;
-    if(warn){
+    const warn = res.status.code !== 0 ? res.status.msg : undefined;
+    if (warn) {
       console.warn(warn);
     }
     rg.update((res.count.delta / maxPeople) * 100, res.count.delta, warn);
   }
- 
 }
-
