@@ -38,7 +38,7 @@ async function update(e) {
   if (!res) {
     rg.update(0, 0);
   } else {
-    const warn = res.status.code !== 0 ? res.status.msg : undefined;
+    const warn = res.status.statusCode !== 0 ? res.status.msg : undefined;
     if (warn) {
       console.warn(warn);
     }
